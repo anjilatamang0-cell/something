@@ -1,5 +1,5 @@
-const text = "Love you";
-const colors = ["", "gold", "blush"]; // "" = default rose
+const text = "Love you \u2764\uFE0F"; // Love you ❤️
+const colors = ["", "rose", "gold"]; // "" = default ember
 
 function spawnWord(){
   const layer = document.getElementById("popLayer");
@@ -9,39 +9,38 @@ function spawnWord(){
   span.className = "pop-word" + (colorClass ? " " + colorClass : "");
   span.textContent = text;
 
-  // Random position across the whole screen
+  // Random position across the whole screen, each time a fresh spot
   const x = 5 + Math.random() * 90; // % from left
   const y = 5 + Math.random() * 90; // % from top
   span.style.left = x + "vw";
   span.style.top = y + "vh";
 
   // Random size for depth/variety
-  const size = 1 + Math.random() * 1.8; // rem
+  const size = 1 + Math.random() * 1.6; // rem
   span.style.fontSize = size + "rem";
 
-  // Slow pop: 3.5–6s duration, so it eases in and clears out gently
-  const duration = 3.5 + Math.random() * 2.5;
+  // One pop cycle only — appears, holds, then disappears (no slow fade loop)
+  const duration = 2.2 + Math.random() * 1.3;
   span.style.animationDuration = duration + "s";
 
   layer.appendChild(span);
 
-  // Remove after a couple of pop cycles so the DOM doesn't grow forever
-  setTimeout(() => span.remove(), duration * 2 * 1000);
+  // Remove from DOM once its single pop cycle finishes
+  setTimeout(() => span.remove(), duration * 1000);
 }
 
 function startPopping(){
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Seed the screen with some words right away
-  const seedCount = reduced ? 8 : 18;
-  for(let i = 0; i < seedCount; i++){
-    setTimeout(spawnWord, i * 150);
+  if(reduced){
+    for(let i = 0; i < 10; i++){
+      setTimeout(spawnWord, i * 300);
+    }
+    return;
   }
 
-  if(reduced) return;
-
-  // Keep spawning new ones continuously
-  setInterval(spawnWord, 350);
+  // Continuously spawn new ones in new places, staggered
+  setInterval(spawnWord, 260);
 }
 
 document.addEventListener("DOMContentLoaded", startPopping);
