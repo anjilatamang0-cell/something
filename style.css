@@ -1,10 +1,12 @@
 :root{
-  --wine-darkest: #250510;
-  --wine-dark:    #3D0B1B;
-  --wine:         #5C1230;
-  --rose:         #C6597A;
-  --blush:        #F2C9D2;
-  --gold:         #D9A94A;
+  --black:        #0A0304;
+  --wine-deepest: #1A0509;
+  --wine-dark:    #2B0812;
+  --wine:         #440D1B;
+  --blood:        #6E1220;
+  --ember:        #A8283F;
+  --rose:         #C24A63;
+  --gold-dim:     #8C6A3A;
   --font-display: 'Cormorant Garamond', serif;
 }
 
@@ -13,13 +15,23 @@
 html, body{
   height: 100%;
   overflow: hidden;
-  background: var(--wine-darkest);
+  background: var(--black);
 }
 
+/* Dark, moody wine gradient — deeper and less saturated than a bright red */
 .bg{
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 30%, var(--wine) 0%, var(--wine-dark) 45%, var(--wine-darkest) 100%);
+  background:
+    radial-gradient(ellipse at 50% 35%, var(--wine) 0%, var(--wine-dark) 40%, var(--wine-deepest) 70%, var(--black) 100%);
+}
+
+/* Soft vignette to pull focus to the center and add depth */
+.vignette{
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.65) 100%);
+  pointer-events: none;
 }
 
 .pop-layer{
@@ -32,37 +44,55 @@ html, body{
   position: absolute;
   top: 0;
   left: 0;
-  transform: translate(-50%, -50%) scale(0.3);
+  transform: translate(-50%, -50%) scale(0.2);
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 600;
   white-space: nowrap;
-  color: var(--rose);
+  color: var(--ember);
   opacity: 0;
-  animation-name: pop;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
+  text-shadow: 0 0 18px rgba(168, 40, 63, 0.55);
+  animation-name: popOnce;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
   pointer-events: none;
 }
 
-.pop-word.gold{ color: var(--gold); }
-.pop-word.blush{ color: var(--blush); }
+.pop-word.rose{ color: var(--rose); text-shadow: 0 0 18px rgba(194, 74, 99, 0.55); }
+.pop-word.gold{ color: var(--gold-dim); text-shadow: 0 0 18px rgba(140, 106, 58, 0.5); }
 
-@keyframes pop{
-  0%, 100%{
+/* Pop in fast, hold briefly, then vanish quickly — no lingering fade */
+@keyframes popOnce{
+  0%{
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.25);
+    transform: translate(-50%, -50%) scale(0.2);
   }
-  50%{
+  18%{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  32%{
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
+  }
+  65%{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  80%{
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  100%{
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce){
   .pop-word{
     animation: none !important;
-    opacity: 0.8;
+    opacity: 0.75;
     transform: translate(-50%, -50%) scale(1);
   }
 }
