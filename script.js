@@ -1,5 +1,8 @@
 const text = "Love you \u2764\uFE0F"; // Love you ❤️
 const colors = ["", "rose", "gold"]; // "" = default ember
+const MAX_ON_SCREEN = 26; // how many can live on screen at once before oldest fades
+
+const activeWords = [];
 
 function spawnWord(){
   const layer = document.getElementById("popLayer");
@@ -9,38 +12,38 @@ function spawnWord(){
   span.className = "pop-word" + (colorClass ? " " + colorClass : "");
   span.textContent = text;
 
-  // Random position across the whole screen, each time a fresh spot
-  const x = 5 + Math.random() * 90; // % from left
-  const y = 5 + Math.random() * 90; // % from top
+  const x = 6 + Math.random() * 88; // % from left
+  const y = 6 + Math.random() * 88; // % from top
   span.style.left = x + "vw";
   span.style.top = y + "vh";
 
-  // Random size for depth/variety
-  const size = 1 + Math.random() * 1.6; // rem
+  const size = 1 + Math.random() * 1.5; // rem
   span.style.fontSize = size + "rem";
 
-  // One pop cycle only — appears, holds, then disappears (no slow fade loop)
-  const duration = 2.2 + Math.random() * 1.3;
-  span.style.animationDuration = duration + "s";
-
   layer.appendChild(span);
+  activeWords.push(span);
 
-  // Remove from DOM once its single pop cycle finishes
-  setTimeout(() => span.remove(), duration * 1000);
+  // Once the screen is comfortably full, retire the oldest word gently
+  // before adding a new one, so it never feels cluttered or abrupt
+  if(activeWords.length > MAX_ON_SCREEN){
+    const oldest = activeWords.shift();
+    oldest.classList.add("leaving");
+    setTimeout(() => oldest.remove(), 2600);
+  }
 }
 
 function startPopping(){
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if(reduced){
-    for(let i = 0; i < 10; i++){
-      setTimeout(spawnWord, i * 300);
+    for(let i = 0; i < 14; i++){
+      setTimeout(spawnWord, i * 400);
     }
     return;
   }
 
-  // Continuously spawn new ones in new places, staggered
-  setInterval(spawnWord, 260);
+  // Slow, unhurried pace — a new word settles in roughly every second
+  setInterval(spawnWord, 950);
 }
 
 document.addEventListener("DOMContentLoaded", startPopping);
