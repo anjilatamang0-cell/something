@@ -41,59 +41,37 @@ html, body{
   position: absolute;
   top: 0;
   left: 0;
-  transform: translate(-50%, -50%) scale(0.4) rotate(-4deg);
+  transform: translate(-50%, -50%) scale(0.6);
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 600;
   white-space: nowrap;
   color: var(--ember);
   opacity: 0;
-  text-shadow: 0 0 20px rgba(184, 50, 75, 0.6), 0 0 40px rgba(184, 50, 75, 0.25);
-  animation: settleIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-             breathe 5s ease-in-out infinite;
-  animation-delay: 0s, 1.8s;
+  text-shadow: 0 0 18px rgba(184, 50, 75, 0.5), 0 0 34px rgba(184, 50, 75, 0.2);
+  animation: fadeInSlow 3s ease-out forwards;
   pointer-events: none;
 }
 
-.pop-word.rose{ color: var(--rose); text-shadow: 0 0 20px rgba(214, 110, 134, 0.6), 0 0 40px rgba(214, 110, 134, 0.25); }
-.pop-word.gold{ color: var(--gold-dim); text-shadow: 0 0 20px rgba(201, 162, 92, 0.6), 0 0 40px rgba(201, 162, 92, 0.25); }
+.pop-word.rose{ color: var(--rose); text-shadow: 0 0 18px rgba(214, 110, 134, 0.5), 0 0 34px rgba(214, 110, 134, 0.2); }
+.pop-word.gold{ color: var(--gold-dim); text-shadow: 0 0 18px rgba(201, 162, 92, 0.5), 0 0 34px rgba(201, 162, 92, 0.2); }
 
-/* Gentle, elegant arrival — settles into place and stays */
-@keyframes settleIn{
+/* Slow, gentle fade in — then stays exactly as is, forever */
+@keyframes fadeInSlow{
   0%{
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.4) rotate(-4deg);
-  }
-  60%{
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.05) rotate(1deg);
+    transform: translate(-50%, -50%) scale(0.6);
   }
   100%{
-    opacity: 0.92;
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1);
   }
-}
-
-/* Once settled, a slow candlelight-like breathing glow — never disappears */
-@keyframes breathe{
-  0%, 100%{ opacity: 0.85; text-shadow: 0 0 16px rgba(184, 50, 75, 0.45), 0 0 32px rgba(184, 50, 75, 0.18); }
-  50%{ opacity: 1; text-shadow: 0 0 26px rgba(184, 50, 75, 0.7), 0 0 46px rgba(184, 50, 75, 0.3); }
-}
-
-/* Slow graceful exit, only used to clear space once the screen fills up */
-.pop-word.leaving{
-  animation: fadeOutSlow 2.5s ease forwards !important;
-}
-
-@keyframes fadeOutSlow{
-  0%{ opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
-  100%{ opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
 }
 
 @media (prefers-reduced-motion: reduce){
   .pop-word{
     animation: none !important;
-    opacity: 0.9;
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1);
   }
 }
