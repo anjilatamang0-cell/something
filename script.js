@@ -51,5 +51,5 @@ function startPopping(){
   spawnBatch(); // first cluster shows up right away
   spawnTimer = setInterval(spawnBatch, 900);
 }
-
+document.querySelectorAll('.pop-word').length
 document.addEventListener("DOMContentLoaded", startPopping);
