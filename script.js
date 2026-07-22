@@ -1,5 +1,5 @@
 const text = "Love you \u2764\uFE0F"; // Love you ❤️
-const colors = ["", "rose", "pink"]; // "" = default ember
+const colors = ["", "rose", "gold"]; // "" = default ember
 const MAX_WORDS = 40; // stop spawning once the screen is nicely filled
 
 let count = 0;
@@ -27,3 +27,23 @@ function spawnWord(){
   count++;
 
   if(count >= MAX_WORDS){
+    clearInterval(spawnTimer);
+  }
+}
+
+let spawnTimer;
+
+function startPopping(){
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if(reduced){
+    for(let i = 0; i < MAX_WORDS; i++){
+      setTimeout(spawnWord, i * 150);
+    }
+    return;
+  }
+
+  spawnTimer = setInterval(spawnWord, 800);
+}
+
+document.addEventListener("DOMContentLoaded", startPopping);
