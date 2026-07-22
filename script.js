@@ -1,8 +1,10 @@
 const text = "Love you \u2764\uFE0F"; // Love you ❤️
 const colors = ["", "rose", "gold"]; // "" = default ember
-const MAX_WORDS = 40; // stop spawning once the screen is nicely filled
+const MAX_WORDS = 55; // a few more before it stops
+const WORDS_PER_BATCH = 6; // more per cluster
 
 let count = 0;
+let spawnTimer;
 
 function spawnWord(){
   const layer = document.getElementById("popLayer");
@@ -20,30 +22,34 @@ function spawnWord(){
   const size = 1 + Math.random() * 1.5; // rem
   span.style.fontSize = size + "rem";
 
-  // Slightly randomize the fade-in speed so they don't all feel synced
+  // Fade-in speed stays exactly as before — just the spawn rate changes
   span.style.animationDuration = (2.5 + Math.random() * 1.5) + "s";
+  span.style.animationDelay = (Math.random() * 0.6) + "s";
 
   layer.appendChild(span);
   count++;
+}
+
+function spawnBatch(){
+  for(let i = 0; i < WORDS_PER_BATCH; i++){
+    spawnWord();
+  }
 
   if(count >= MAX_WORDS){
     clearInterval(spawnTimer);
   }
 }
 
-let spawnTimer;
-
 function startPopping(){
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if(reduced){
-    for(let i = 0; i < MAX_WORDS; i++){
-      setTimeout(spawnWord, i * 150);
-    }
+    spawnBatch();
     return;
   }
 
-  spawnTimer = setInterval(spawnWord, 800);
+  spawnBatch(); // first cluster shows up right away
+  spawnTimer = setInterval(spawnBatch, 900);
 }
 
 document.addEventListener("DOMContentLoaded", startPopping);
