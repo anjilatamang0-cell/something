@@ -1,8 +1,8 @@
 const text = "Love you \u2764\uFE0F"; // Love you ❤️
-const colors = ["", "rose", "gold"]; // "" = default ember
-const MAX_ON_SCREEN = 26; // how many can live on screen at once before oldest fades
+const colors = ["", "rose", "pink"]; // "" = default ember
+const MAX_WORDS = 40; // stop spawning once the screen is nicely filled
 
-const activeWords = [];
+let count = 0;
 
 function spawnWord(){
   const layer = document.getElementById("popLayer");
@@ -20,30 +20,10 @@ function spawnWord(){
   const size = 1 + Math.random() * 1.5; // rem
   span.style.fontSize = size + "rem";
 
+  // Slightly randomize the fade-in speed so they don't all feel synced
+  span.style.animationDuration = (2.5 + Math.random() * 1.5) + "s";
+
   layer.appendChild(span);
-  activeWords.push(span);
+  count++;
 
-  // Once the screen is comfortably full, retire the oldest word gently
-  // before adding a new one, so it never feels cluttered or abrupt
-  if(activeWords.length > MAX_ON_SCREEN){
-    const oldest = activeWords.shift();
-    oldest.classList.add("leaving");
-    setTimeout(() => oldest.remove(), 2600);
-  }
-}
-
-function startPopping(){
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if(reduced){
-    for(let i = 0; i < 14; i++){
-      setTimeout(spawnWord, i * 400);
-    }
-    return;
-  }
-
-  // Slow, unhurried pace — a new word settles in roughly every second
-  setInterval(spawnWord, 950);
-}
-
-document.addEventListener("DOMContentLoaded", startPopping);
+  if(count >= MAX_WORDS){
