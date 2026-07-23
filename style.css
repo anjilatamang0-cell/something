@@ -31,13 +31,13 @@ html, body{
   pointer-events: none;
 }
 
-.pop-layer{
+.heart-layer{
   position: fixed;
   inset: 0;
   overflow: hidden;
 }
 
-.pop-word{
+.heart-word{
   position: absolute;
   top: 0;
   left: 0;
@@ -53,25 +53,26 @@ html, body{
   pointer-events: none;
 }
 
-.pop-word.rose{ color: var(--rose); text-shadow: 0 0 18px rgba(214, 110, 134, 0.5), 0 0 34px rgba(214, 110, 134, 0.2); }
-.pop-word.gold{ color: var(--gold-dim); text-shadow: 0 0 18px rgba(201, 162, 92, 0.5), 0 0 34px rgba(201, 162, 92, 0.2); }
+.heart-word.rose{ color: var(--rose); text-shadow: 0 0 18px rgba(214, 110, 134, 0.5), 0 0 34px rgba(214, 110, 134, 0.2); }
+.heart-word.gold{ color: var(--gold-dim); text-shadow: 0 0 18px rgba(201, 162, 92, 0.5), 0 0 34px rgba(201, 162, 92, 0.2); }
 
-/* Slow, gentle fade in — then stays exactly as is, forever */
+/* Fades in slowly, then stays exactly as is. Final opacity can be
+   tuned per-word via --final-opacity for depth (outline vs fill). */
 @keyframes fadeInSlow{
   0%{
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.6);
   }
   100%{
-    opacity: 0.95;
+    opacity: var(--final-opacity, 0.95);
     transform: translate(-50%, -50%) scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .pop-word{
+  .heart-word{
     animation: none !important;
-    opacity: 0.95;
+    opacity: var(--final-opacity, 0.95);
     transform: translate(-50%, -50%) scale(1);
   }
 }
