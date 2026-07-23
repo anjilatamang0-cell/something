@@ -28,13 +28,12 @@ function buildHeart(){
   const boxSize = Math.min(width, height) * 0.72;
   const centerXpx = width / 2;
   const centerYpx = height / 2;
-  const scale = boxSize / 34; // parametric heart curve spans about -17 to 17
+  const scale = boxSize / 34;
 
   let delayCounter = 0;
   const outlineDelayStep = 45;
   const fillDelayStep = 18;
 
-  // 1) Outline: the crisp heart edge, bigger + brighter words
   const outlinePoints = 70;
   for(let i = 0; i < outlinePoints; i++){
     const t = (i / outlinePoints) * Math.PI * 2;
@@ -50,7 +49,6 @@ function buildHeart(){
     delayCounter += outlineDelayStep;
   }
 
-  // 2) Fill: concentric, shrinking copies of the same heart curve to glow the inside
   const ringScales = [0.82, 0.64, 0.46, 0.28];
   ringScales.forEach((ringScale, ringIndex) => {
     const ringPoints = Math.max(10, Math.round(outlinePoints * ringScale * 0.55));
@@ -75,8 +73,21 @@ function buildHeart(){
   });
 }
 
-document.addEventListener("DOMContentLoaded", buildHeart);
-window.addEventListener("resize", () => {
-  document.getElementById("heartLayer").innerHTML = "";
+function startExperience(){
+  const startScreen = document.getElementById("startScreen");
+  startScreen.classList.add("hidden");
   buildHeart();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("startBtn");
+  btn.addEventListener("click", startExperience);
+});
+
+window.addEventListener("resize", () => {
+  // Only rebuild if the heart has already started (button already clicked)
+  if(document.getElementById("startScreen").classList.contains("hidden")){
+    document.getElementById("heartLayer").innerHTML = "";
+    buildHeart();
+  }
 });
