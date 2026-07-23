@@ -56,8 +56,6 @@ html, body{
 .heart-word.rose{ color: var(--rose); text-shadow: 0 0 18px rgba(214, 110, 134, 0.5), 0 0 34px rgba(214, 110, 134, 0.2); }
 .heart-word.gold{ color: var(--gold-dim); text-shadow: 0 0 18px rgba(201, 162, 92, 0.5), 0 0 34px rgba(201, 162, 92, 0.2); }
 
-/* Fades in slowly, then stays exactly as is. Final opacity can be
-   tuned per-word via --final-opacity for depth (outline vs fill). */
 @keyframes fadeInSlow{
   0%{
     opacity: 0;
